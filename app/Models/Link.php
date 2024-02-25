@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Link extends Model
+{
+    use HasFactory;
+    public $table = 'links';
+
+    protected $fillable = [
+        'title',
+        'links',
+        'image_and_links_id',
+    ];
+}
