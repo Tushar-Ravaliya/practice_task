@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('description');
             $table->string('category');
-            $table->string('images_and_links_id');
             $table->string('user_id');
             $table->timestamps();
         });

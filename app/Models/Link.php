@@ -11,8 +11,7 @@ class Link extends Model
     public $table = 'links';
 
     protected $fillable = [
-        'title',
+        'link_title',
         'links',
-        'image_and_links_id',
     ];
 }

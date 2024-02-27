@@ -40,53 +40,34 @@ class Blogcontroller extends Controller
             'description' => 'required|min:50',
         ]);
 
-        // $blog = Blog::create([
-        //     'title' => $request->title,
-        //     'description' => $request->description,
-        //     'user_id' => session('user_id'),
-        //     'category' => json_encode($request->categories)
-        // ]);
+        $blog = Blog::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category' => json_encode($request->categories),
+            'user_id' => session('user_id'),
+        ]);
 
-        $blog->images()->create([
-            
-        ])
-
-        $blogs_table = new Blog;
-        $blog_images_table = new Blog_image;
-        $blogs_table->title = $request->title;
-        $blogs_table->description = $request->description;
-        $blogs_table->user_id = session('user_id');
-        $blogs_table->category = json_encode($request->categories);
-        $images_and_links_id = session('user_id') . uniqid();
-        $blogs_table->images_and_links_id = $images_and_links_id;
-
-
-        $image_array = [];
         if (!empty($request->file('blog_images'))) {
             foreach ($request->file('blog_images') as $image) {
 
                 $image_name = uniqid() . $image->getClientOriginalName();
                 $image->move('blogs_images', $image_name);
-                $image_array[] = $image_name;
+                $blog->images()->create([
+                    'images' => $image_name,
+                ]);
             }
-            $blog_images_table->images = json_encode($image_array);
-            $blog_images_table->images_and_links_id = $images_and_links_id;
-            $blog_images_table->save();
         }
-        $i = 0;
         if (isset($request->blog_title) && isset($request->blog_link)) {
-            foreach ($request->blog_title as $title) {
-                $links_table = new link;
-
-                // DB::table('links')->insert(['title' => $title, 'links' => $request->blog_link[$i], 'image_and_links_id' => $images_and_links_id]);
-                $links_table->title = $title;
-                $links_table->links = $request->blog_link[$i];
-                $links_table->images_and_links_id = $images_and_links_id;
-                $i = $i + 1;
-                $links_table->save();
+           
+            $titles = $request->blog_title;
+            $links = $request->blog_link;
+            for ($i = 0; $i < count($titles); $i++) {
+                $blog->links()->create([
+                    'link_title' => $titles[$i],
+                    'links' => $links[$i],
+                ]);
             }
         }
-        $blogs_table->save();
         return redirect()->back();
     }
 
