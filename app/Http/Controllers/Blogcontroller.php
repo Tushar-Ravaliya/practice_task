@@ -76,7 +76,8 @@ class Blogcontroller extends Controller
      */
     public function show(string $id)
     {
-        //
+        $blogs = Blog::with('images')->with('links')->where('user_id',$id)->latest()->paginate(5);
+        return view('myblogs', compact('blogs'));
     }
 
     /**
@@ -84,7 +85,9 @@ class Blogcontroller extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $blogs = Blog::with('images')->with('links')->where('id',$id)->first();
+        $data = Category::select()->get();
+        return view('editblog', compact('blogs','data'));
     }
 
     /**
@@ -92,7 +95,38 @@ class Blogcontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required|min:50',
+        ]);
+        $blog = Blog::where('id',$id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category' => json_encode($request->categories),
+        ]);
+
+        if (!empty($request->file('blog_images'))) {
+            foreach ($request->file('blog_images') as $image) {
+
+                $image_name = uniqid() . $image->getClientOriginalName();
+                $image->move('blogs_images', $image_name);
+                $blog->images()->update([
+                    'images' => $image_name,
+                ]);
+            }
+        }
+        if (isset($request->blog_title) && isset($request->blog_link)) {
+           
+            $titles = $request->blog_title;
+            $links = $request->blog_link;
+            for ($i = 0; $i < count($titles); $i++) {
+                $blog->links()->update([
+                    'link_title' => $titles[$i],
+                    'links' => $links[$i],
+                ]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -100,6 +134,6 @@ class Blogcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return 'hello';
     }
 }

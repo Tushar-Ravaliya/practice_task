@@ -9,9 +9,10 @@ function add_links(){
 }
 
 function remove_links(){
-   var copiedImages = document.getElementsByClassName("title");
-   var copiedFigs = document.getElementsByClassName("links");
-   
-   box.removeChild(copiedImages[copiedImages.length-1]);
-   box.removeChild(copiedFigs[copiedFigs.length-1]); 
+   var titles = document.getElementsByClassName("title");
+   var links = document.getElementsByClassName("links");
+   if(!(titles.length < 2)){
+   box.removeChild(titles[titles.length-1]);
+   box.removeChild(links[links.length-1]); 
+   }
  }

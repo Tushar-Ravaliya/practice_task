@@ -57,7 +57,7 @@ class Authcontroller extends Controller
             $message->from("travaliya519@rku.ac.in", "Tushar");
         });
 
-        return view('login');
+        return redirect()->route('login');
     }
     public function login(Request $req)
     {

@@ -23,6 +23,7 @@ Route::get('/', function () {
     }
     return view('login');
 });
+Route::view('login','login')->name('login');
 Route::view('admin.userlist','admin.userlist');
 Route::get('showdata',[Admincontroller::class,'showdata']);
 Route::view('register','register');

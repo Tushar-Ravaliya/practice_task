@@ -12,12 +12,8 @@ class Homecontroller extends Controller
 {
     public function show_blogs()
     {
-        $blogs = Blog::with('images')->get();
-
-        // dd($blogs);
-
-        $Blog = Blog::select()->get();
-        // return dd($results);
-        return view('home', compact('Blog'));
+        $blogs = Blog::with('images')->with('links')->get();
+        // return dd($blogs);
+        return view('home', compact('blogs'));
     }
 }
