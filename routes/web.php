@@ -23,11 +23,17 @@ Route::get('/', function () {
     }
     return view('login');
 });
-Route::view('login','login')->name('login');
+// Route::view('login','login')->name('login');
 Route::view('admin.userlist','admin.userlist');
+Route::view('admin.bloglist','admin.bloglist');
 Route::get('showdata',[Admincontroller::class,'showdata']);
+Route::get('showblog',[Admincontroller::class,'showblog']);
+Route::get('deleteuser/{id}',[Admincontroller::class,'delete_user']);
+Route::get('edituser/{id}',[Admincontroller::class,'edit_user']);
+Route::post('updateuser/{id}',[Admincontroller::class,'update_user']);
 Route::view('register','register');
 Route::get('home',[Homecontroller::class,'show_blogs'])->name('home');
+Route::get('url/{link}',[Homecontroller::class,'url']);
 // Route::view('addblogs','addblogs');
 Route::get('feth_cat',[Admincontroller::class,'feth_cat']);
 Route::post('addcat_action',[Admincontroller::class,'add_catagories']);

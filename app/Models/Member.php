@@ -9,4 +9,10 @@ class Member extends Model
 {
     use HasFactory;
     public $table = 'members';
+
+
+    public function blogs()
+    {   
+        return $this->hasOne(Blog::class,'user_id',);
+    }
 }

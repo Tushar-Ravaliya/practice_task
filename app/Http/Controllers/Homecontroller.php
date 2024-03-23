@@ -13,7 +13,13 @@ class Homecontroller extends Controller
     public function show_blogs()
     {
         $blogs = Blog::with('images')->with('links')->get();
-        // return dd($blogs);
         return view('home', compact('blogs'));
     }
+    public function url($link)
+    {
+        $url = 'http://'.$link;
+        return redirect($url);
+        
+    }
+
 }

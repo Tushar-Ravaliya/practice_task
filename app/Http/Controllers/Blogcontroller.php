@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-use App\Models\Blog_imagel;
 use App\Models\Blog;
 use App\Models\Blog_image;
 use App\Models\Link;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 
 class Blogcontroller extends Controller
@@ -99,18 +99,23 @@ class Blogcontroller extends Controller
             'title' => 'required',
             'description' => 'required|min:50',
         ]);
-        $blog = Blog::where('id',$id)->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category' => json_encode($request->categories),
-        ]);
+        $blog = Blog::with('images')->with('links')->where('id',$id)->first();
+
+            $blog->where('id', $id)->update(array('title' => $request->title, 'description' => $request->description, 'category' => json_encode($request->categories)));
 
         if (!empty($request->file('blog_images'))) {
+            $blog->images()->where('blog_id',$blog['id'])->delete(); 
+            foreach ($blog->images() as $blog_image) {
+                $file_name = "blogs_images/" . $blog_image['images'];
+                if (File::exists($file_name)) {
+                    File::delete($file_name);
+                }
+            }
             foreach ($request->file('blog_images') as $image) {
-
+               
                 $image_name = uniqid() . $image->getClientOriginalName();
                 $image->move('blogs_images', $image_name);
-                $blog->images()->update([
+                $blog->images()->create([
                     'images' => $image_name,
                 ]);
             }
@@ -119,8 +124,12 @@ class Blogcontroller extends Controller
            
             $titles = $request->blog_title;
             $links = $request->blog_link;
+
+            if (!empty($titles) && !empty($links)) {
+                $blog->links()->where('blog_id',$blog['id'])->delete(); 
+            }
             for ($i = 0; $i < count($titles); $i++) {
-                $blog->links()->update([
+                $blog->links()->create([
                     'link_title' => $titles[$i],
                     'links' => $links[$i],
                 ]);
@@ -134,6 +143,7 @@ class Blogcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        return 'hello';
+        Blog::where('id',$id)->delete();
+        return redirect()->back();
     }
 }

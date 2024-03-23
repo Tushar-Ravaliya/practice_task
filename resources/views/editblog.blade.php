@@ -87,7 +87,8 @@
 
                 <div class="card">
 
-                    <form class="form-card" action="{{URL::to('/')}}/blogs/{{$blogs['id']}}" method="POST" enctype="multipart/form-data">
+                    <form class="form-card" action="{{ URL::to('/') }}/blogs/{{ $blogs['id'] }}" method="POST"
+                        enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="row justify-content-end  text-left ">
@@ -131,10 +132,13 @@
                             @endif
                         </div>
                         <div class="d-flex flex-column col-3">
+                            @php
+                                $cat = json_decode($blogs['category']);
+                            @endphp
                             @foreach ($data as $d)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $blogs->category }}"
-                                        id="flexCheckDefault"name="categories[]">
+                                    <input class="form-check-input" type="checkbox" value="{{ $d->categories }}"
+                                        name="categories[]" {{ in_array($d['categories'], $cat) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="flexCheckDefault">
                                         {{ $d['categories'] }}
                                     </label>
@@ -183,8 +187,8 @@
             </div>
         </div>
     </div>
-    <script src="js/addblogs.js"></script>
-    <script src="js/image_preview.js"></script>
+    <script src="{{ URL::to('/') }}/js/addblogs.js"></script>
+    <script src="{{ URL::to('/') }}/js/image_preview.js"></script>
 </body>
 
 </html>

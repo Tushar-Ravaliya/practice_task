@@ -79,9 +79,9 @@
                                                     class="btn btn-primary">Edit</a>
                                             </td>
                                             <td>
-                                                <form action="{{URL::to('/')}}/blogs/{{$blogs['id']}}" method="POST">
+                                                <form action="{{URL::to('/')}}/blogs/{{$b['id']}}" method="POST">
                                                     @csrf
-                                                    @method('delete')
+                                                    @method('DELETE')
                                                     <button type="submit" class="btn bg-red-500 btn-danger">Delete</button>
                                                 </form>
                                             </td>

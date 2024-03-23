@@ -22,4 +22,8 @@ class Blog extends Model
     public function links() {
         return $this->hasMany(Link::class);
     }
+
+    public function members() {
+        return $this->belongsTo(Member::class,'user_id','id');
+    }
 }

@@ -22,7 +22,7 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link active text-white" href="#">Home</a>
                 <a class="nav-item nav-link active text-white" href="feth_cat">Add catagories</a>
-                <a class="nav-item nav-link active text-white" href="admin.bloglist">Blogs list</a>
+                <a class="nav-item nav-link active text-white" href="feth_cat">Blogs list</a>
                 <a class="nav-item nav-link active text-white" href="logout">logout</a>
 
 
@@ -32,15 +32,13 @@
     <table id="td" border='1'>
         <thead>
             <tr>
-                <td>name</td>
-                <td>email</td>
-                <td>mobile no</td>
-                <td>date of birth</td>
-                <td>gender</td>
+                <td>title</td>
+                <td>description</td>
+                <td>category</td>
+                <td>User name</td>
+                <td>user email</td>
                 <td>blog count</td>
                 <td>status</td>
-                <td>edit</td>
-                <td>delete</td>
             </tr>
         </thead>
     </table>
@@ -52,31 +50,21 @@
                 order: [
                     [0, "desc"]
                 ],
-                ajax: "{{ url('showdata') }}",
+                ajax: "{{ url('showblog') }}",
                 columns: [{
-                    data: 'name'
+                    data: 'title'
                 }, {
-                    data: 'email'
+                    data: 'description'
                 }, {
-                    data: 'mobile_no'
+                    data: 'category'
                 }, {
-                    data: 'birthdate'
+                    data: 'members.name'
                 }, {
-                    data: 'gender'
+                    data: 'members.email'
                 },{
                     data: 'blogs_count'
                 }, {
                     data: 'status'
-                } ,{
-                    data:'id',
-                    render:function(data,row,type){
-                        return `<a  href="edituser/`+data+`" class="btn btn-primary" id="delete_quote">Edit</a>`;
-                    }
-                }, {
-                    data:'id',
-                    render:function(data,row,type){
-                        return `<a  href="deleteuser/`+data+`" class="btn btn-danger" id="delete_quote">Delete</a>`;
-                    }
                 }],
 
 
